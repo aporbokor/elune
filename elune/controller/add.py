@@ -4,6 +4,7 @@ import tempfile
 import re
 import subprocess
 import datetime
+import yaml
 from . import rc
 
 
@@ -12,42 +13,49 @@ def escape_filename(value: str) -> str:
     return re.sub(r"[-\s]+", "-", value).strip("-_")
 
 
-def get_rawtext(skeleton=b"", extension: str = ".tmp"):
+def get_rawtext(template="", extension: str = ".tmp"):
     with tempfile.NamedTemporaryFile(suffix=extension) as tf:
-        print(tf.name)
-        print(rc.EDITOR)
-        tf.write(skeleton)
+        tf.write(template.encode("utf-8"))
         tf.flush()
         subprocess.call([rc.EDITOR, tf.name])
-
         tf.seek(0)
         edited_message = tf.read()
-        print(edited_message.decode("utf-8"))
-        # print(edited_message.decode("utf-8"))
     return edited_message
 
 
-def get_problem_bodies(sk=rc.PS_HINTS, ext: str = ".typ") -> list[str]:
-    skeleton = sk + rc.NSEPARATOR.encode("utf-8")
-    f = get_rawtext(skeleton, ext)
-    f = f.decode("utf-8")
-    print(f.split(rc.SEPARATOR))
-    return f.split(rc.SEPARATOR)
+def get_problem_bodies(tpl=rc.PS_HINTS, ext: str = ".typ") -> list[str]:
+    template = tpl + rc.NSEPARATOR
+    return get_rawtext(template, ext).decode("utf-8").split(rc.SEPARATOR)
 
 
-def get_yaml_tags(src):
-    get_rawtext(rc.YAML_HINTS, ".yaml")
+def get_yaml_tags(src: str):
+    template = rc.YAML_HINTS.format(
+        src=src,
+        path=os.path.join(rc.ELUNE_PATH, escape_filename(src)),
+        date=datetime.datetime.now(),
+        hint=rc.TAG_HINTS,
+    )
+    rawtext = get_rawtext(template, ".yaml")
+    d = yaml.load(rawtext, Loader=yaml.Loader)
+    if os.path.isdir(d["path"]):
+        print("Directory already exists!")
+        return
+    if os.path.isfile(d["path"]):
+        print("File already exists!")
+        return
+    return d["path"], rawtext
 
 
 def add(source: str):
-    fname = escape_filename(source) + ".yaml"
-    if os.path.isfile(fname):
-        print("File already exists!")
-        return
-
-    return [
-        get_problem_bodies(),
-        source,
-        # TODO: tags
-        datetime.datetime.now(),
-    ]
+    bodies = get_problem_bodies()
+    target, rt = get_yaml_tags(source)
+    try:
+        os.mkdir(target)
+        with open(os.path.join(target, escape_filename(source) + ".typ"), "w") as f:
+            # f.write("/*")
+            # f.write(rt)
+            # f.write("*/")
+            for b in bodies:
+                f.write(b + "\n")
+    except:
+        print("oops")

@@ -3,5 +3,5 @@ from . import controller
 
 
 class EluneTerminal(cmd2.Cmd, controller.EluneController):
-    prompt = "elune) "
+    prompt = "\033[0;36melune) \033[0;0m"
     file = None
