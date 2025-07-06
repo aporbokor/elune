@@ -1,29 +1,23 @@
 import os
-import sys
 import tempfile
-import re
 import subprocess
 import datetime
 import yaml
 from . import rc
+from .utils import escape_filename
 
 
-def escape_filename(value: str) -> str:
-    value = re.sub(r"[^\w\s-]", "", value.lower())
-    return re.sub(r"[-\s]+", "-", value).strip("-_")
-
-
-def get_rawtext(template="", extension: str = ".tmp"):
+def get_rawtext(template: str = "", extension: str = ".tmp") -> bytes:
     with tempfile.NamedTemporaryFile(suffix=extension) as tf:
-        tf.write(template.encode("utf-8"))
+        _ = tf.write(template.encode("utf-8"))
         tf.flush()
         subprocess.call([rc.EDITOR, tf.name])
-        tf.seek(0)
+        _ = tf.seek(0)
         edited_message = tf.read()
     return edited_message
 
 
-def get_problem_bodies(tpl=rc.PS_HINTS, ext: str = ".typ") -> list[str]:
+def get_problem_bodies(tpl: str = rc.PS_HINTS, ext: str = ".tex") -> list[str]:
     template = tpl + rc.NSEPARATOR
     return get_rawtext(template, ext).decode("utf-8").split(rc.SEPARATOR)
 
@@ -50,8 +44,13 @@ def add(source: str):
     bodies = get_problem_bodies()
     target, rt = get_yaml_tags(source)
     try:
+        # create yaml file
+        with open(
+            os.path.join(rc.ELUNE_PATH, escape_filename(source) + ".yaml"), "w"
+        ) as f:
+            f.write(rt.decode("utf-8"))
         os.mkdir(target)
-        with open(os.path.join(target, escape_filename(source) + ".typ"), "w") as f:
+        with open(os.path.join(target, escape_filename(source) + ".tex"), "w") as f:
             # f.write("/*")
             # f.write(rt)
             # f.write("*/")

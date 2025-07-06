@@ -2,12 +2,21 @@ import os
 from pathlib import Path
 
 
-PS_HINTS = """/*Input the problem and solution below.*/"""
+# PS_HINTS = """#import "@local/evan:1.0.0":*
+# #show: evan.with(maketitle:false)
+# /*Input the problem and solution below.*/"""
+PS_HINTS = """\\documentclass[11pt]{scrartcl}
+\\usepackage{apor}
+\\begin{document}
+%input the problem and solution below.
+\\begin{prb*}
+\\end{prb*}
+\\end{document}"""
 SEPARATOR = "\n---\n"
 NSEPARATOR = "\n" + SEPARATOR + "\n"
 EDITOR = os.environ.get("EDITOR")
 ELUNE_PATH = str(Path.home().joinpath("Dropbox", "ELUNE"))
-YAML_HINTS = """#Input the problem metadata below.
+YAML_HINTS = """#input the problem metadata below.
 source: {src} #must be specified
 desc: <+> #must be specified
 path: {path}
@@ -16,10 +25,10 @@ tags: <+> #@analysis, @calc, @linalg
 {hint}"""
 TAG_HINTS = """#Some hints for tags:
 #
-# Source: @uni @mine
+# Source: @imo @putnam @schweitzer
 # Shape: @eval @findall @isthere
 # NT tags: @modular @p-adic @diophantine @powersum @pell
 # Algebra tags: @funct-anal @polynomial @trig @roots @calculus
 # Ineq tags: @amgm @cauchy @trivial
 # Geo tags: @collinearity @concurrency @projection @inversion @homothecy @anglechase @simtri
-# Combo tags: @pascals @blockwalk @binom @genfunc @partition"""
+# Combi tags: @pascals @blockwalk @binom @genfunc @partition"""
