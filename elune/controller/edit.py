@@ -5,7 +5,7 @@ from .rc import ELUNE_PATH, EDITOR
 from .utils import escape_filename
 
 
-def edit(problem_name: str):
+def edit_problem(problem_name: str):
     slug = escape_filename(problem_name)
     yaml_path = os.path.join(ELUNE_PATH, slug + ".yaml")
 
@@ -25,3 +25,17 @@ def edit(problem_name: str):
         subprocess.call([EDITOR, tex_file])
     except Exception as e:
         print(f"Error editing {problem_name}: {e}")
+
+
+def edit_yaml(problem_name: str):
+    slug = escape_filename(problem_name)
+    yaml_path = os.path.join(ELUNE_PATH, slug + ".yaml")
+
+    if not os.path.isfile(yaml_path):
+        print(f"No YAML file found for: {problem_name}")
+        return
+
+    try:
+        subprocess.call([EDITOR, yaml_path])
+    except Exception as e:
+        print(f"Error opening YAML file: {e}")

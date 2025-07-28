@@ -15,16 +15,20 @@ def find_problems(source=None, tag=None):
             with open(path, "r") as f:
                 data = yaml.safe_load(f)
 
-            if source and source.lower() not in data.get("source", "").lower():
-                continue
-            if tag:
-                tags = data.get("tags", [])
-                if isinstance(tags, str):
-                    tags = [t.strip() for t in tags.split(",")]
-                if tag.lower() not in [t.lower() for t in tags]:
-                    continue
+            tags = data.get("tags", [])
+            if isinstance(tags, str):
+                tags = [t.strip() for t in tags.split(",")]
+            if not isinstance(tags, list):
+                raise ValueError(f"'tags' must be a list in {fname}")
 
-            results.append((fname, data.get("source", ""), tags))
+            src = data.get("source", "")
+            desc = data.get("desc", "[no description]")
+            if source and source.lower() not in src.lower():
+                continue
+            if tag and tag.lower() not in [t.lower() for t in tags]:
+                continue
+
+            results.append((fname, src, desc, tags))
         except Exception as e:
             print(f"Failed to read {fname}: {e}")
 

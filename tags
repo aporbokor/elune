@@ -50,7 +50,7 @@ ELUNE_PATH	elune/controller/rc.py	/^ELUNE_PATH = str(Path.home().joinpath("Dropb
 EluneController	elune/controller/__init__.py	/^class EluneController:$/;"	c
 EluneTerminal	elune/term.py	/^class EluneTerminal(cmd2.Cmd, controller.EluneController):$/;"	c
 NSEPARATOR	elune/controller/rc.py	/^NSEPARATOR = "\\n" + SEPARATOR + "\\n"$/;"	v
-PS_HINTS	elune/controller/rc.py	/^PS_HINTS = """\\\\documentclass[11pt]{scrartcl}$/;"	v
+PS_HINTS	elune/controller/rc.py	/^PS_HINTS = """\\\\documentclass[12pt]{scrartcl}$/;"	v
 Problem	elune/model.py	/^class Problem(yaml.YAMLObject):$/;"	c
 SEPARATOR	elune/controller/rc.py	/^SEPARATOR = "\\n---\\n"$/;"	v
 TAG_HINTS	elune/controller/rc.py	/^TAG_HINTS = """#Some hints for tags:$/;"	v
@@ -59,24 +59,33 @@ __init__	elune/controller/__init__.py	/^    def __init__(self):$/;"	m	class:Elun
 __init__	elune/model.py	/^    def __init__(self, **kwargs):$/;"	m	class:Problem
 add	elune/controller/add.py	/^def add(source: str):$/;"	f
 bodies	elune/model.py	/^    bodies = []$/;"	v	class:Problem
+compile	elune/controller/compile.py	/^def compile(slug: str):$/;"	f
 date_added	elune/model.py	/^    date_added = None$/;"	v	class:Problem
+decorator	elune/controller/__init__.py	/^    def decorator(func):$/;"	f	function:with_resolved_filename	file:
 delete	elune/controller/delete.py	/^def delete(name: str):$/;"	f
 do_add	elune/controller/__init__.py	/^    def do_add(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
+do_compile	elune/controller/__init__.py	/^    def do_compile(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
 do_delete	elune/controller/__init__.py	/^    def do_delete(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
-do_edit	elune/controller/__init__.py	/^    def do_edit(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
+do_ep	elune/controller/__init__.py	/^    def do_ep(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
+do_ey	elune/controller/__init__.py	/^    def do_ey(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
 do_find	elune/controller/__init__.py	/^    def do_find(self, arg: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
 do_view	elune/controller/__init__.py	/^    def do_view(self, f: str) -> None:$/;"	m	class:EluneController	typeref:typename:None
-edit	elune/controller/edit.py	/^def edit(problem_name: str):$/;"	f
+edit_problem	elune/controller/edit.py	/^def edit_problem(problem_name: str):$/;"	f
+edit_yaml	elune/controller/edit.py	/^def edit_yaml(problem_name: str):$/;"	f
 elune	README.md	/^# elune/;"	c
 escape_filename	elune/controller/utils.py	/^def escape_filename(value: str) -> str:$/;"	f	typeref:typename:str
 file	elune/term.py	/^    file = None$/;"	v	class:EluneTerminal
 find_problems	elune/controller/find.py	/^def find_problems(source=None, tag=None):$/;"	f
-get_problem_bodies	elune/controller/add.py	/^def get_problem_bodies(tpl: str = rc.PS_HINTS, ext: str = ".tex") -> list[str]:$/;"	f	typeref:typename:list[str]
+get_problem_bodies	elune/controller/add.py	/^def get_problem_bodies(src: str, ext: str = ".tex") -> list[str]:$/;"	f	typeref:typename:list[str]
 get_rawtext	elune/controller/add.py	/^def get_rawtext(template: str = "", extension: str = ".tmp") -> bytes:$/;"	f	typeref:typename:bytes
 get_yaml_tags	elune/controller/add.py	/^def get_yaml_tags(src: str):$/;"	f
 intro	elune/term.py	/^    intro = f"\\033[0;93mElune 0.1.0 ({datetime.now().strftime('%h')} {datetime.now().day} {date/;"	v	class:EluneTerminal
 main	elune/__main__.py	/^def main():$/;"	f
 prompt	elune/term.py	/^    prompt = "\\033[1;33melune) \\033[0;0m"$/;"	v	class:EluneTerminal
+resolve_filename	elune/controller/__init__.py	/^    def resolve_filename(self, arg: str) -> str | None:$/;"	m	class:EluneController	typeref:typename:str|None
 source	elune/model.py	/^    source = ""$/;"	v	class:Problem
 tags	elune/model.py	/^    tags = []$/;"	v	class:Problem
+truncate	elune/controller/utils.py	/^def truncate(s, w):$/;"	f
 view	elune/controller/view.py	/^def view(problem_name: str):$/;"	f
+with_resolved_filename	elune/controller/__init__.py	/^def with_resolved_filename(usage: str):$/;"	f
+wrapper	elune/controller/__init__.py	/^        def wrapper(self, f: str):$/;"	f	function:with_resolved_filename.decorator	file:
